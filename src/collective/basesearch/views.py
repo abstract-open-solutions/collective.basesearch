@@ -21,6 +21,7 @@ except ImportError:
 from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
 
+from plone.i18n.normalizer import idnormalizer
 from plone.memoize import view
 
 
@@ -98,6 +99,16 @@ class BaseSearchView(ViewMixin):
     custom_export_view = None
 
     @property
+    def wrapper_id(self):
+        value = self.ptype
+        if isinstance(self.ptype, (list, tuple)):
+            value = '-'.join(self.ptype)
+        return idnormalizer.normalize(value)
+
+    def is_default_view(self):
+        return self.context.getLayout() == self.__name__
+
+    @property
     def display_fields(self):
         """ fields showed in results listing
         """
@@ -167,8 +178,8 @@ class BaseSearchView(ViewMixin):
         query = self.base_query.copy()
         query.update(data)
         return LazyList(
-            self.catalog.searchLazyList(query),
-            self.get_display_value
+            self.catalog.searchResults(query),
+            self.get_display_values
         )
 
     @property

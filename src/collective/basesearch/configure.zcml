@@ -1,11 +1,15 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:five="http://namespaces.zope.org/five"
-    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="collective.basesearch">
 
-  <five:registerPackage package="." initialize=".initialize" />
-
   <!-- -*- extra stuff goes here -*- -->
+
+  <browser:page
+    for="*"
+    name="basesearch-macros"
+    template="search_macros.pt"
+    permission="zope.Public"
+    />
 
 </configure>

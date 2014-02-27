@@ -1,0 +1,115 @@
+<div metal:define-macro="base-search"
+     class="search-wrapper"
+     tal:attributes="id             view/wrapper_id;"
+     tal:define="results            view/results;
+                 Batch              python: modules['Products.CMFPlone'].Batch;
+                 b_size             python:20;
+                 b_start            python:0;
+                 b_start            request/b_start | b_start;
+                 batch              python: Batch(results or [], b_size, int(b_start), orphan=1);">
+
+    <metal:title define-slot="title">
+      <h1 class="documentFirstHeading">
+        <span
+          i18n:translate=""
+          tal:condition="not: view/is_default_view">
+          Search
+        </span>
+        <span
+          tal:condition="view/is_default_view"
+          tal:replace="context/Title"
+          />
+      </h1>
+    </metal:title>
+
+    <div class="search-tools">
+
+      <form class="horizontal"
+            tal:attributes="action view/__name__">
+
+        <div class="search-fields">
+          <metal:fields define-slot="search-fields">
+
+            <div id="rifENEA" class="field">
+                <label for="some_field" i18n:translate="">Rif. ENEA</label>
+                <input
+                  type="text"
+                  name="rifENEA"
+                  tal:attributes="value request/rifENEA|nothing"
+                  />
+            </div>
+
+            <div id="rifGU" class="field">
+                <label for="rifGU" i18n:translate="">Rif. GU</label>
+                <input
+                  type="text"
+                  name="rifGU"
+                  tal:attributes="value request/rifGU|nothing"
+                  />
+            </div>
+
+          </metal:fields>
+        </div>
+
+        <metal:controls define-slot="form-controls">
+          <div class="formControls">
+            <input type="hidden" name="submitted" value="1" />
+            <input
+                type="submit"
+                class="standalone"
+                name="search"
+                value="search"
+                i18n:attributes="value"
+                />
+
+            <tal:csv-export condition="view/export_csv_enabled">
+              <input
+                type="submit"
+                name="export_csv"
+                value="export CSV"
+                />
+            </tal:csv-export>
+          </div>
+        </metal:controls>
+
+      </form>
+
+    </div>
+
+    <metal:no-results define-slot="no-results">
+      <div class="no-results" tal:condition="python: request.get('submitted') and not results">
+        <p i18n:translate="">No items found</p>
+      </div>
+    </metal:no-results>
+
+    <metal:results define-slot="results">
+
+      <div class="listing results" tal:condition="results">
+        <h2 i18n:translate="">Items</h2>
+        <table class="listing" cellspacing="0" cellpadding="0"
+               summary="Search results"
+               i18n:attributes="summary">
+          <tr>
+            <tal:th repeat="field python: view.display_fields.iteritems()">
+                <th tal:attributes="class python: field[0]"
+                    tal:content="python:field[1]" />
+            </tal:th>
+          </tr>
+          <tal:results repeat="item batch">
+            <tr class="item">
+              <tal:col repeat="col python: view.display_fields.iterkeys()">
+                <td tal:attributes="class col">
+                    <a tal:attributes="href item/url"
+                       tal:content="python: item.get(col)" />
+                </td>
+              </tal:col>
+            </tr>
+          </tal:results>
+        </table>
+      </div>
+
+    </metal:results>
+
+    <div metal:use-macro="here/batch_macros/macros/navigation" />
+
+</div>
