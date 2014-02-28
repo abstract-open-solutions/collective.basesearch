@@ -24,6 +24,9 @@ from Products.CMFCore.utils import getToolByName
 from plone.i18n.normalizer import idnormalizer
 from plone.memoize import view
 
+from collective.basesearch.utils import is_collection
+from collective.basesearch.utils import get_collection_query
+
 
 class LazyList(list):
     """Lazy list with custom formatting for items.
@@ -95,8 +98,14 @@ class BaseSearchView(ViewMixin):
     search_fields = {}
     results = None
     show_result_with_no_query = False
+    show_search_fields_for_collections = False
     export_csv_enabled = False
     custom_export_view = None
+
+    @property
+    def form_action_url(self):
+        url = self.context.absolute_url()
+        return url + '/' + self.__name__
 
     @property
     def wrapper_id(self):
@@ -129,6 +138,9 @@ class BaseSearchView(ViewMixin):
     @property
     def catalog(self):
         return getToolByName(self.context, 'portal_catalog')
+
+    def is_collection(self):
+        return is_collection(self.context)
 
     def _get_search_data(self):
         data = {}
@@ -168,9 +180,12 @@ class BaseSearchView(ViewMixin):
 
     @property
     def base_query(self):
-        return {
+        query = {
             'portal_type': self.ptype
         }
+        if self.is_collection():
+            query.update(get_collection_query(self.context))
+        return query
 
     def _get_results(self, data=None):
         if data is None:

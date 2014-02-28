@@ -25,7 +25,8 @@
     <div class="search-tools">
 
       <form class="horizontal"
-            tal:attributes="action view/__name__">
+            tal:attributes="action view/form_action_url"
+            tal:condition="view/show_search_fields_for_collections">
 
         <div class="search-fields">
           <metal:fields define-slot="search-fields">
