@@ -30,22 +30,25 @@
         <div class="search-fields">
           <metal:fields define-slot="search-fields">
 
-            <div id="rifENEA" class="field">
-                <label for="some_field" i18n:translate="">Rif. ENEA</label>
-                <input
-                  type="text"
-                  name="rifENEA"
-                  tal:attributes="value request/rifENEA|nothing"
-                  />
+            <div id="some-field" class="field">
+              <label for="some_field" i18n:translate="">Custom field</label>
+              <input
+                type="text"
+                name="some_field"
+                tal:attributes="value request/some_field|nothing"
+                />
             </div>
 
-            <div id="rifGU" class="field">
-                <label for="rifGU" i18n:translate="">Rif. GU</label>
-                <input
-                  type="text"
-                  name="rifGU"
-                  tal:attributes="value request/rifGU|nothing"
-                  />
+            <div id="other-field" class="field">
+              <label for="other_field" i18n:translate="">Other custom field</label>
+              <select name="other_field" tal:define="selected request/other_field|nothing">
+                  <option value="">--</option>
+                  <tal:opt repeat="item python:[('', 'Item 1'), ('', 'Item 2')]">
+                      <option tal:attributes="value python:item[0];
+                                              selected python:selected==item[0] and 'selected' or None"
+                              tal:content="python:item[1]" />
+                  </tal:opt>
+              </select>
             </div>
 
           </metal:fields>
