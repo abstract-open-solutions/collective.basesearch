@@ -142,6 +142,12 @@ class BaseSearchView(ViewMixin):
     def is_collection(self):
         return is_collection(self.context)
 
+    @property
+    def show_search_form(self):
+        if self.is_collection():
+            return self.show_search_fields_for_collections
+        return True
+
     def _get_search_data(self):
         data = {}
         for k in self.search_fields.iterkeys():
