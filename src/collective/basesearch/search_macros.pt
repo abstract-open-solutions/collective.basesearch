@@ -1,3 +1,12 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      tal:omit-tag=""
+      i18n:domain="collective.basesearch">
+
 <div metal:define-macro="base-search"
      class="search-wrapper"
      tal:attributes="id             view/wrapper_id;"
@@ -32,7 +41,7 @@
           <metal:fields define-slot="search-fields">
 
             <div id="some-field" class="field">
-              <label for="some_field" i18n:translate="">Custom field</label>
+              <label for="some_field">Custom field</label>
               <input
                 type="text"
                 name="some_field"
@@ -41,7 +50,7 @@
             </div>
 
             <div id="other-field" class="field">
-              <label for="other_field" i18n:translate="">Other custom field</label>
+              <label for="other_field">Other custom field</label>
               <select name="other_field" tal:define="selected request/other_field|nothing">
                   <option value="">--</option>
                   <tal:opt repeat="item python:[('', 'Item 1'), ('', 'Item 2')]">
@@ -71,6 +80,7 @@
                 type="submit"
                 name="export_csv"
                 value="export CSV"
+                i18n:attributes="value"
                 />
             </tal:csv-export>
           </div>
@@ -117,3 +127,5 @@
     <div metal:use-macro="here/batch_macros/macros/navigation" />
 
 </div>
+
+</html>

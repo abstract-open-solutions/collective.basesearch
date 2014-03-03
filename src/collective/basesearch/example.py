@@ -7,7 +7,6 @@ except ImportError:
 
 
 from collective.basesearch.views import BaseSearchView
-_ = lambda x: x
 
 
 class MySearch(BaseSearchView):
@@ -17,16 +16,16 @@ class MySearch(BaseSearchView):
     show_result_with_no_query = True
 
     search_fields = OrderedDict([
-        ('foo', _(u'Foo')),
-        ('bar', _(u'Bar')),
-        ('review_state', _(u'State')),
+        ('foo', u'Foo'),
+        ('bar', u'Bar'),
+        ('review_state', u'State'),
     ])
 
     display_fields = OrderedDict([
-        ('foo', _(u'Foo')),
-        ('bar', _(u'Bar')),
-        ('review_state', _(u'State')),
-        ('baz', _(u'Baz')),
+        ('foo', u'Foo'),
+        ('bar', u'Bar'),
+        ('review_state', u'State'),
+        ('baz', u'Baz'),
     ])
 
     @property
