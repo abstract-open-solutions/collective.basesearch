@@ -7,7 +7,7 @@ try:
 except ImportError:
     from StringIO import StringIO
 try:
-    from collection import OrderedDict
+    from collections import OrderedDict
 except ImportError:
     from ordereddict import OrderedDict
 
