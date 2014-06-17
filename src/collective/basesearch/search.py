@@ -112,7 +112,7 @@ class BaseSearchView(ViewMixin):
         value = self.ptype
         if isinstance(self.ptype, (list, tuple)):
             value = '-'.join(self.ptype)
-        return idnormalizer.normalize(value)
+        return idnormalizer.normalize(value) + '-search'
 
     def is_default_view(self):
         return self.context.getLayout() == self.__name__
